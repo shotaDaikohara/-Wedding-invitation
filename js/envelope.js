@@ -41,26 +41,29 @@ export const EnvelopeComponent = {
   startOpenSequence() {
     const stamp = document.querySelector('.sealing-stamp');
     const flap = document.querySelector('.envelope-flap');
+    const envelopeSection = document.getElementById('phase-envelope');
 
     if (!stamp || !flap) return;
 
-    // クリック無効化
     stamp.style.pointerEvents = 'none';
-
-    // スタンプ割れアニメーション（0.4s）
     stamp.classList.add('stamp-breaking');
 
-    // 400ms後に封筒蓋開きアニメーション（0.8s）
     setTimeout(() => {
       flap.classList.add('flap-opening');
 
-      // 800ms後にフェーズ切り替え
+      // 蓋が開いた後、2秒待って封筒をフェードアウト
       setTimeout(() => {
-        console.log('[DEBUG] onOpenComplete called');
-        if (typeof this._onOpenComplete === 'function') {
-          this._onOpenComplete();
+        if (envelopeSection) {
+          envelopeSection.style.transition = 'opacity 0.5s ease';
+          envelopeSection.style.opacity = '0';
         }
-      }, 800);
+        // フェードアウト完了後にonOpenComplete
+        setTimeout(() => {
+          if (typeof this._onOpenComplete === 'function') {
+            this._onOpenComplete();
+          }
+        }, 500);
+      }, 2000);
     }, 400);
   },
 };

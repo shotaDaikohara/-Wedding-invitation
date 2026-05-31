@@ -46,7 +46,6 @@ function transitionToPhase(nextPhase) {
     if (Number(phase) === nextPhase) {
       el.classList.remove('phase--hidden');
       el.classList.add('phase--active');
-      console.log('[DEBUG] showing:', id, el.className);
     } else {
       el.classList.remove('phase--active');
       el.classList.add('phase--hidden');

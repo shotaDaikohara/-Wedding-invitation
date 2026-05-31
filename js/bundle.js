@@ -22,17 +22,23 @@
     startOpenSequence() {
       const stamp = document.querySelector(".sealing-stamp");
       const flap = document.querySelector(".envelope-flap");
+      const envelopeSection = document.getElementById("phase-envelope");
       if (!stamp || !flap) return;
       stamp.style.pointerEvents = "none";
       stamp.classList.add("stamp-breaking");
       setTimeout(() => {
         flap.classList.add("flap-opening");
         setTimeout(() => {
-          console.log("[DEBUG] onOpenComplete called");
-          if (typeof this._onOpenComplete === "function") {
-            this._onOpenComplete();
+          if (envelopeSection) {
+            envelopeSection.style.transition = "opacity 0.5s ease";
+            envelopeSection.style.opacity = "0";
           }
-        }, 800);
+          setTimeout(() => {
+            if (typeof this._onOpenComplete === "function") {
+              this._onOpenComplete();
+            }
+          }, 500);
+        }, 2e3);
       }, 400);
     }
   };
@@ -299,7 +305,6 @@
       if (Number(phase) === nextPhase) {
         el.classList.remove("phase--hidden");
         el.classList.add("phase--active");
-        console.log("[DEBUG] showing:", id, el.className);
       } else {
         el.classList.remove("phase--active");
         el.classList.add("phase--hidden");
