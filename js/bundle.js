@@ -353,7 +353,7 @@
   }
   function initRsvp() {
     RsvpComponent.init({
-      apiEndpoint: "https://script.google.com/macros/s/AKfycbzIvu6WrUm7TlFBQZsIbza9UJY6Inh3Ceasl39_egUShYZhUkBdoYkiucqBu6ouTbl0/exec"
+      apiEndpoint: "https://script.google.com/macros/s/AKfycbxZ7pXb0RRAPUAPiJnpWX23zO7AuQFMqPjKmtlmPPMj-3baRkZJ9Hlhpl5x8JLyzAdJ/exec"
     });
   }
 })();
