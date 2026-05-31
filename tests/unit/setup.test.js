@@ -40,7 +40,7 @@ describe('タスク1: プロジェクト基盤のセットアップ', () => {
     expect(content).toContain('meta name="viewport"');
     expect(content).toContain('fonts.googleapis.com');
     expect(content).toContain('css/base.css');
-    expect(content).toContain('js/main.js');
+    expect(content).toContain('js/bundle.js');
   });
 
   test('css/base.css が存在し、CSS カスタムプロパティを含む', () => {
