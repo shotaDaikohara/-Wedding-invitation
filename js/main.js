@@ -46,8 +46,6 @@ function transitionToPhase(nextPhase) {
     if (Number(phase) === nextPhase) {
       el.classList.remove('phase--hidden');
       el.classList.add('phase--active');
-      // display: none → block 後に強制リフローしてtransitionを有効化
-      void el.offsetHeight;
     } else {
       el.classList.remove('phase--active');
       el.classList.add('phase--hidden');
@@ -113,16 +111,8 @@ export const LetterComponent = {
 // ---------------------------------------------------------------------------
 
 function initLetter() {
-  const letterEl = document.querySelector('.letter');
-  if (letterEl) {
-    // display: none → block 後にブラウザのレイアウト計算を強制する
-    // offsetHeight を読むことでリフローが発生し、transitionが確実に発火する
-    void letterEl.offsetHeight;
-  }
-  setTimeout(() => {
-    LetterComponent.reveal();
-    initMystery();
-  }, 20);
+  LetterComponent.reveal();
+  initMystery();
 }
 
 // ---------------------------------------------------------------------------

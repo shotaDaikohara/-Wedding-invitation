@@ -298,7 +298,6 @@
       if (Number(phase) === nextPhase) {
         el.classList.remove("phase--hidden");
         el.classList.add("phase--active");
-        void el.offsetHeight;
       } else {
         el.classList.remove("phase--active");
         el.classList.add("phase--hidden");
@@ -333,14 +332,8 @@
     }
   };
   function initLetter() {
-    const letterEl = document.querySelector(".letter");
-    if (letterEl) {
-      void letterEl.offsetHeight;
-    }
-    setTimeout(() => {
-      LetterComponent.reveal();
-      initMystery();
-    }, 20);
+    LetterComponent.reveal();
+    initMystery();
   }
   function initMystery() {
     MysteryComponent.init({

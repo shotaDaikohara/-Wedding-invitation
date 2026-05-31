@@ -24,18 +24,23 @@
   line-height: 1.9;
   color: var(--color-text-secondary);
 
-  /* 初期状態: 非表示 */
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-
   box-sizing: border-box;
 }
 
-/* 出現時: transitionで滑らかに表示 */
+/* 出現アニメーション */
 .letter--visible {
-  opacity: 1;
-  transform: translateY(0);
+  animation: letterReveal 0.8s ease-out both;
+}
+
+@keyframes letterReveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* --------------------------------------------------------------------------
