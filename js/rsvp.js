@@ -131,7 +131,8 @@ export const RsvpComponent = {
   show() {
     const form = document.getElementById('rsvp-form');
     if (!form) return;
-    form.style.display = 'block';
+    // クラスで表示制御（style属性より優先度が安定する）
+    form.classList.remove('rsvp-form--hidden');
   },
 
   /**
@@ -185,7 +186,7 @@ export const RsvpComponent = {
     const form = document.getElementById('rsvp-form');
     const success = document.getElementById('rsvp-success');
 
-    if (form) form.style.display = 'none';
+    if (form) form.classList.add('rsvp-form--hidden');
     if (success) success.style.display = 'block';
   },
 

@@ -24,12 +24,8 @@
   line-height: 1.9;
   color: var(--color-text-secondary);
 
-  /* 初期状態: 画面外（下）に配置 */
-  transform: translateY(100%);
+  /* 初期状態: 非表示（アニメーション前） */
   opacity: 0;
-
-  /* overflow を hidden にして子要素のはみ出しを防ぐ */
-  overflow: hidden;
 
   /* box-sizing は base.css の * で設定済みだが念のため明示 */
   box-sizing: border-box;
@@ -42,11 +38,11 @@
 
 @keyframes letterReveal {
   from {
-    transform: translateY(100%);
+    transform: translateY(30px);
     opacity: 0;
   }
   to {
-    transform: translateY(0%);
+    transform: translateY(0);
     opacity: 1;
   }
 }

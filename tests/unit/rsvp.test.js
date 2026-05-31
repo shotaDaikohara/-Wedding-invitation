@@ -218,14 +218,14 @@ describe('submitWithTimeout()', () => {
 describe('RsvpComponent.show()', () => {
   beforeEach(() => {
     document.body.innerHTML = `
-      <form id="rsvp-form" style="display: none;"></form>
+      <form id="rsvp-form" class="rsvp-form rsvp-form--hidden"></form>
     `;
   });
 
-  test('フォームを display: block にする（Requirements 5.8）', () => {
+  test('rsvp-form--hidden クラスを除去して表示する（Requirements 5.8）', () => {
     RsvpComponent.show();
     const form = document.getElementById('rsvp-form');
-    expect(form.style.display).toBe('block');
+    expect(form.classList.contains('rsvp-form--hidden')).toBe(false);
   });
 
   test('フォームが存在しない場合もエラーにならない', () => {
@@ -304,7 +304,7 @@ describe('RsvpComponent.init() — フォーム送信フロー', () => {
 
     await new Promise((r) => setTimeout(r, 50));
 
-    expect(document.getElementById('rsvp-form').style.display).toBe('none');
+    expect(document.getElementById('rsvp-form').classList.contains('rsvp-form--hidden')).toBe(true);
     expect(document.getElementById('rsvp-success').style.display).toBe('block');
   });
 

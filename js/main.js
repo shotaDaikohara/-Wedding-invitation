@@ -111,8 +111,14 @@ export const LetterComponent = {
 // ---------------------------------------------------------------------------
 
 function initLetter() {
-  LetterComponent.reveal();
-  initMystery();
+  // display: none → block の切り替え直後にアニメーションが発火しない問題を
+  // requestAnimationFrame で1フレーム待ってから解決する
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      LetterComponent.reveal();
+      initMystery();
+    });
+  });
 }
 
 // ---------------------------------------------------------------------------
