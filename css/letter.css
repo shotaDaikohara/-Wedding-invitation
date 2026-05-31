@@ -130,6 +130,15 @@
   color: var(--color-text-secondary);
 }
 
+.mystery-image {
+  width: 100%;
+  max-width: 100%;
+  border: 2px solid var(--color-accent);
+  border-radius: 4px;
+  display: block;
+  margin: 0 auto;
+}
+
 /* 入力エリア */
 .mystery-input-area {
   margin-bottom: var(--spacing-lg);

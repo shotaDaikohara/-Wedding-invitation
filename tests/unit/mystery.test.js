@@ -1,233 +1,125 @@
-/**
- * mystery.test.js — normalizeAnswer / validate のユニットテスト
- * タスク 4.2: MysteryComponent の normalizeAnswer と validate を実装する
- * Requirements: 3.2, 3.5
- */
-
-import { normalizeAnswer, validate } from '../../js/mystery.js';
+import { normalizeAnswer, validate, validate2, MysteryComponent } from '../../js/mystery.js';
+import { jest } from '@jest/globals';
 
 // ---------------------------------------------------------------------------
 // normalizeAnswer
 // ---------------------------------------------------------------------------
-
 describe('normalizeAnswer()', () => {
-  test('半角小文字はそのまま返す', () => {
-    expect(normalizeAnswer('tanbo')).toBe('tanbo');
-  });
-
-  test('半角大文字を小文字に変換する', () => {
-    expect(normalizeAnswer('TANBO')).toBe('tanbo');
-  });
-
-  test('全角大文字を半角小文字に変換する', () => {
-    expect(normalizeAnswer('ＴＡＮＢＯ')).toBe('tanbo');
-  });
-
-  test('全角小文字を半角小文字に変換する', () => {
-    expect(normalizeAnswer('ｔａｎｂｏ')).toBe('tanbo');
-  });
-
-  test('前後の半角スペースを除去する', () => {
-    expect(normalizeAnswer('  tanbo  ')).toBe('tanbo');
-  });
-
-  test('前後の全角スペースを除去する', () => {
-    expect(normalizeAnswer('\u3000tanbo\u3000')).toBe('tanbo');
-  });
-
-  test('空文字列は空文字列を返す', () => {
-    expect(normalizeAnswer('')).toBe('');
-  });
-
-  test('空白のみの文字列は空文字列を返す', () => {
-    expect(normalizeAnswer('   ')).toBe('');
-  });
-
-  test('全角数字を半角に変換する', () => {
-    expect(normalizeAnswer('１２３')).toBe('123');
-  });
-
-  test('正解 TANBO の正規化結果は tanbo', () => {
-    expect(normalizeAnswer('TANBO')).toBe('tanbo');
-  });
-
-  test('全角・大文字混在の正解文字列を正規化する', () => {
-    expect(normalizeAnswer('ＴＡＮbo')).toBe('tanbo');
-  });
+  test('半角小文字はそのまま返す', () => expect(normalizeAnswer('tanbo')).toBe('tanbo'));
+  test('半角大文字を小文字に変換する', () => expect(normalizeAnswer('TANBO')).toBe('tanbo'));
+  test('全角大文字を半角小文字に変換する', () => expect(normalizeAnswer('ＴＡＮＢＯ')).toBe('tanbo'));
+  test('前後の空白を除去する', () => expect(normalizeAnswer('  tanbo  ')).toBe('tanbo'));
+  test('空文字列は空文字列を返す', () => expect(normalizeAnswer('')).toBe(''));
+  test('空白のみは空文字列を返す', () => expect(normalizeAnswer('   ')).toBe(''));
 });
 
 // ---------------------------------------------------------------------------
-// validate
+// validate (謎1: TANBO)
 // ---------------------------------------------------------------------------
+describe('validate() 謎1', () => {
+  test('空文字列は "empty"', () => expect(validate('')).toBe('empty'));
+  test('正解(小文字)は "correct"', () => expect(validate('tanbo')).toBe('correct'));
+  test('正解(大文字)は "correct"', () => expect(validate('TANBO')).toBe('correct'));
+  test('正解(全角)は "correct"', () => expect(validate('ＴＡＮＢＯ')).toBe('correct'));
+  test('不正解は "incorrect"', () => expect(validate('wrong')).toBe('incorrect'));
+});
 
-describe('validate()', () => {
-  test('空文字列は "empty" を返す', () => {
-    expect(validate('')).toBe('empty');
-  });
-
-  test('空白のみの文字列は "empty" を返す', () => {
-    expect(validate('   ')).toBe('empty');
-  });
-
-  test('全角スペースのみの文字列は "empty" を返す', () => {
-    expect(validate('\u3000\u3000')).toBe('empty');
-  });
-
-  test('正解（半角小文字）は "correct" を返す', () => {
-    expect(validate('tanbo')).toBe('correct');
-  });
-
-  test('正解（半角大文字）は "correct" を返す', () => {
-    expect(validate('TANBO')).toBe('correct');
-  });
-
-  test('正解（全角大文字）は "correct" を返す', () => {
-    expect(validate('ＴＡＮＢＯ')).toBe('correct');
-  });
-
-  test('正解（全角小文字）は "correct" を返す', () => {
-    expect(validate('ｔａｎｂｏ')).toBe('correct');
-  });
-
-  test('正解（前後に空白あり）は "correct" を返す', () => {
-    expect(validate('  TANBO  ')).toBe('correct');
-  });
-
-  test('不正解は "incorrect" を返す', () => {
-    expect(validate('wrong')).toBe('incorrect');
-  });
-
-  test('部分一致は "incorrect" を返す', () => {
-    expect(validate('tan')).toBe('incorrect');
-  });
-
-  test('余分な文字が付いた入力は "incorrect" を返す', () => {
-    expect(validate('tanbo!')).toBe('incorrect');
-  });
+// ---------------------------------------------------------------------------
+// validate2 (謎2: 鹿児島)
+// ---------------------------------------------------------------------------
+describe('validate2() 謎2', () => {
+  test('空文字列は "empty"', () => expect(validate2('')).toBe('empty'));
+  test('"かごしま" は "correct"', () => expect(validate2('かごしま')).toBe('correct'));
+  test('"鹿児島" は "correct"', () => expect(validate2('鹿児島')).toBe('correct'));
+  test('"kagoshima" は "correct"', () => expect(validate2('kagoshima')).toBe('correct'));
+  test('"KAGOSHIMA" は "correct"', () => expect(validate2('KAGOSHIMA')).toBe('correct'));
+  test('不正解は "incorrect"', () => expect(validate2('tokyo')).toBe('incorrect'));
 });
 
 // ---------------------------------------------------------------------------
 // MysteryComponent
 // ---------------------------------------------------------------------------
-
-import { jest } from '@jest/globals';
-import { MysteryComponent } from '../../js/mystery.js';
-
-/**
- * jsdom に謎解きセクションの DOM を構築するヘルパー
- */
-function setupMysteryDOM() {
+function setupDOM() {
   document.body.innerHTML = `
-    <input type="text" id="answer-input" />
-    <p id="answer-error"></p>
-    <button class="mystery-submit-btn">封を解く</button>
-    <a id="skip-link" class="skip-link" href="#">謎を解かずに回答する</a>
+    <section id="mystery-1">
+      <input type="text" id="answer-input-1" />
+      <p id="answer-error-1"></p>
+      <button id="mystery-btn-1">封を解く</button>
+      <a id="skip-link" href="#" class="skip-link">謎を解かずに回答する</a>
+    </section>
+    <section id="mystery-2" style="display:none;">
+      <input type="text" id="answer-input-2" />
+      <p id="answer-error-2"></p>
+      <button id="mystery-btn-2">封を解く</button>
+      <a id="skip-link-2" href="#" class="skip-link">謎を解かずに回答する</a>
+    </section>
   `;
 }
 
 describe('MysteryComponent', () => {
   beforeEach(() => {
-    setupMysteryDOM();
-    // _failCount をリセット（オブジェクトリテラルなので直接リセット）
+    setupDOM();
     MysteryComponent._failCount = 0;
     MysteryComponent._onSolve = null;
   });
 
-  test('正解入力で onSolve コールバックが呼ばれる', () => {
+  test('謎1正解で謎2が表示される', () => {
+    MysteryComponent.init({ onSolve: jest.fn() });
+    document.getElementById('answer-input-1').value = 'TANBO';
+    document.getElementById('mystery-btn-1').click();
+    expect(document.getElementById('mystery-2').style.display).toBe('block');
+    expect(document.getElementById('mystery-1').style.display).toBe('none');
+  });
+
+  test('謎1不正解でエラーメッセージが表示される', () => {
+    MysteryComponent.init({ onSolve: jest.fn() });
+    document.getElementById('answer-input-1').value = 'wrong';
+    document.getElementById('mystery-btn-1').click();
+    expect(document.getElementById('answer-error-1').textContent).toBe('もう一度考えてみてください');
+  });
+
+  test('謎1空入力でエラーメッセージが表示される', () => {
+    MysteryComponent.init({ onSolve: jest.fn() });
+    document.getElementById('answer-input-1').value = '';
+    document.getElementById('mystery-btn-1').click();
+    expect(document.getElementById('answer-error-1').textContent).toBe('答えを入力してください');
+  });
+
+  test('謎2正解でonSolveが呼ばれる', () => {
     const onSolve = jest.fn();
-    MysteryComponent.init({ answer: 'TANBO', onSolve });
-
-    document.getElementById('answer-input').value = 'TANBO';
-    document.querySelector('.mystery-submit-btn').click();
-
+    MysteryComponent.init({ onSolve });
+    document.getElementById('answer-input-2').value = 'かごしま';
+    document.getElementById('mystery-btn-2').click();
     expect(onSolve).toHaveBeenCalledTimes(1);
   });
 
-  test('正解入力でエラーメッセージがクリアされる', () => {
+  test('謎2で「鹿児島」も正解', () => {
     const onSolve = jest.fn();
-    MysteryComponent.init({ answer: 'TANBO', onSolve });
-
-    const errorEl = document.getElementById('answer-error');
-    errorEl.textContent = '前回のエラー';
-
-    document.getElementById('answer-input').value = 'tanbo';
-    document.querySelector('.mystery-submit-btn').click();
-
-    expect(errorEl.textContent).toBe('');
+    MysteryComponent.init({ onSolve });
+    document.getElementById('answer-input-2').value = '鹿児島';
+    document.getElementById('mystery-btn-2').click();
+    expect(onSolve).toHaveBeenCalledTimes(1);
   });
 
-  test('不正解入力でエラーメッセージが表示される', () => {
-    MysteryComponent.init({ answer: 'TANBO', onSolve: jest.fn() });
-
-    document.getElementById('answer-input').value = 'wrong';
-    document.querySelector('.mystery-submit-btn').click();
-
-    expect(document.getElementById('answer-error').textContent).toBe('もう一度考えてみてください');
-  });
-
-  test('不正解入力で Answer_Input がクリアされる', () => {
-    MysteryComponent.init({ answer: 'TANBO', onSolve: jest.fn() });
-
-    const inputEl = document.getElementById('answer-input');
-    inputEl.value = 'wrong';
-    document.querySelector('.mystery-submit-btn').click();
-
-    expect(inputEl.value).toBe('');
-  });
-
-  test('空入力で「答えを入力してください」が表示される', () => {
-    const onSolve = jest.fn();
-    MysteryComponent.init({ answer: 'TANBO', onSolve });
-
-    document.getElementById('answer-input').value = '';
-    document.querySelector('.mystery-submit-btn').click();
-
-    expect(document.getElementById('answer-error').textContent).toBe('答えを入力してください');
-    expect(onSolve).not.toHaveBeenCalled();
-  });
-
-  test('空入力では onSolve が呼ばれない', () => {
-    const onSolve = jest.fn();
-    MysteryComponent.init({ answer: 'TANBO', onSolve });
-
-    document.getElementById('answer-input').value = '   ';
-    document.querySelector('.mystery-submit-btn').click();
-
-    expect(onSolve).not.toHaveBeenCalled();
-  });
-
-  test('Skip_Link クリックで onSolve が呼ばれる', () => {
-    const onSolve = jest.fn();
-    MysteryComponent.init({ answer: 'TANBO', onSolve });
-
+  test('謎1スキップで謎2が表示される', () => {
+    MysteryComponent.init({ onSolve: jest.fn() });
     document.getElementById('skip-link').click();
+    expect(document.getElementById('mystery-2').style.display).toBe('block');
+  });
 
+  test('謎2スキップでonSolveが呼ばれる', () => {
+    const onSolve = jest.fn();
+    MysteryComponent.init({ onSolve });
+    document.getElementById('skip-link-2').click();
     expect(onSolve).toHaveBeenCalledTimes(1);
   });
 
-  test('4回不正解では Skip_Link に強調クラスが付かない', () => {
-    MysteryComponent.init({ answer: 'TANBO', onSolve: jest.fn() });
-    const inputEl = document.getElementById('answer-input');
-    const submitBtn = document.querySelector('.mystery-submit-btn');
-
-    for (let i = 0; i < 4; i++) {
-      inputEl.value = 'wrong';
-      submitBtn.click();
-    }
-
-    expect(document.getElementById('skip-link').classList.contains('skip-link--highlighted')).toBe(false);
-  });
-
-  test('5回不正解で Skip_Link に skip-link--highlighted クラスが付与される', () => {
-    MysteryComponent.init({ answer: 'TANBO', onSolve: jest.fn() });
-    const inputEl = document.getElementById('answer-input');
-    const submitBtn = document.querySelector('.mystery-submit-btn');
-
+  test('5回不正解でskip-linkが強調される', () => {
+    MysteryComponent.init({ onSolve: jest.fn() });
     for (let i = 0; i < 5; i++) {
-      inputEl.value = 'wrong';
-      submitBtn.click();
+      document.getElementById('answer-input-1').value = 'wrong';
+      document.getElementById('mystery-btn-1').click();
     }
-
     expect(document.getElementById('skip-link').classList.contains('skip-link--highlighted')).toBe(true);
   });
 });

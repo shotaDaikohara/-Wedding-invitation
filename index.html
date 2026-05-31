@@ -76,12 +76,11 @@
           </p>
         </div>
 
-        <!-- 謎解きセクション -->
-        <section class="mystery-section" aria-label="謎解き">
+        <!-- 謎解きセクション 1 -->
+        <section class="mystery-section" id="mystery-1" aria-label="謎解き1">
           <div class="mystery-riddle">
-            <p class="mystery-title">― 封を解く謎 ―</p>
-            <pre class="mystery-problem">
-【例】
+            <p class="mystery-title">― 謎解き その一 ―</p>
+            <pre class="mystery-problem">【例】
 3 , 1 , 20 = CAT
 4 , 15 , 7 = DOG
 19 , 21 , 14 = SUN
@@ -91,32 +90,55 @@
           </div>
 
           <div class="mystery-input-area">
-            <label for="answer-input" class="mystery-label">答えを入力してください</label>
+            <label for="answer-input-1" class="mystery-label">答えを入力してください</label>
             <input
               type="text"
-              id="answer-input"
+              id="answer-input-1"
               class="answer-input"
               maxlength="50"
               autocomplete="off"
               autocapitalize="characters"
               spellcheck="false"
-              aria-describedby="answer-error"
             />
-            <p id="answer-error" class="error-message" role="alert" aria-live="polite"></p>
+            <p id="answer-error-1" class="error-message" role="alert" aria-live="polite"></p>
           </div>
 
-          <button type="button" class="mystery-submit-btn" aria-label="謎の答えを送信して封を解く">
+          <button type="button" class="mystery-submit-btn" id="mystery-btn-1">
             封を解く
           </button>
 
-          <!-- スキップリンク -->
-          <a
-            href="#"
-            id="skip-link"
-            class="skip-link"
-            role="button"
-            aria-label="謎を解かずに出欠フォームへ進む"
-          >謎を解かずに回答する</a>
+          <a href="#" id="skip-link" class="skip-link" role="button">謎を解かずに回答する</a>
+        </section>
+
+        <!-- 謎解きセクション 2（謎1正解後に表示） -->
+        <section class="mystery-section" id="mystery-2" style="display:none;" aria-label="謎解き2">
+          <div class="mystery-riddle">
+            <p class="mystery-title">― 謎解き その二 ―</p>
+            <img
+              src="images/謎２.png"
+              alt="謎解き2の問題"
+              class="mystery-image"
+            />
+          </div>
+
+          <div class="mystery-input-area">
+            <label for="answer-input-2" class="mystery-label">答えを入力してください</label>
+            <input
+              type="text"
+              id="answer-input-2"
+              class="answer-input"
+              maxlength="50"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <p id="answer-error-2" class="error-message" role="alert" aria-live="polite"></p>
+          </div>
+
+          <button type="button" class="mystery-submit-btn" id="mystery-btn-2">
+            封を解く
+          </button>
+
+          <a href="#" id="skip-link-2" class="skip-link" role="button">謎を解かずに回答する</a>
         </section>
       </article>
     </section>

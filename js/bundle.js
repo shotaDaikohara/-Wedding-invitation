@@ -44,102 +44,113 @@
   };
 
   // js/mystery.js
-  var ANSWER = "TANBO";
+  var ANSWER_1 = "TANBO";
+  var ANSWERS_2 = ["\u304B\u3054\u3057\u307E", "\u9E7F\u5150\u5CF6", "kagoshima"];
   function normalizeAnswer(input) {
     if (typeof input !== "string") return "";
-    return input.replace(
-      /[\uFF01-\uFF5E]/g,
-      (ch) => String.fromCharCode(ch.charCodeAt(0) - 65248)
-    ).toLowerCase().replace(/^[\s\u3000]+|[\s\u3000]+$/g, "");
+    return input.replace(/[\uFF01-\uFF5E]/g, (ch) => String.fromCharCode(ch.charCodeAt(0) - 65248)).toLowerCase().replace(/^[\s\u3000]+|[\s\u3000]+$/g, "");
   }
   function validate(input) {
     const normalized = normalizeAnswer(input);
-    if (normalized === "") {
-      return "empty";
-    }
-    if (normalized === normalizeAnswer(ANSWER)) {
-      return "correct";
-    }
+    if (normalized === "") return "empty";
+    if (normalized === normalizeAnswer(ANSWER_1)) return "correct";
+    return "incorrect";
+  }
+  function validate2(input) {
+    const normalized = normalizeAnswer(input);
+    if (normalized === "") return "empty";
+    if (ANSWERS_2.some((a) => normalizeAnswer(a) === normalized)) return "correct";
     return "incorrect";
   }
   var MysteryComponent = {
-    /** @type {number} 不正解回数 */
     _failCount: 0,
-    /** @type {Function|null} 正解時コールバック */
     _onSolve: null,
-    /**
-     * 初期化。
-     * @param {Object} options
-     * @param {string} options.answer - 正解文字列（現在は内部定数 ANSWER を使用）
-     * @param {Function} options.onSolve - 正解時のコールバック
-     */
     init(options) {
       this._failCount = 0;
       this._onSolve = options.onSolve ?? null;
-      const submitBtn = document.querySelector(".mystery-submit-btn");
-      const skipLink = document.getElementById("skip-link");
-      if (submitBtn) {
-        submitBtn.addEventListener("click", () => {
-          this._handleSubmit();
-        });
+      const btn1 = document.getElementById("mystery-btn-1");
+      if (btn1) {
+        btn1.addEventListener("click", () => this._handleSubmit1());
       }
-      if (skipLink) {
-        skipLink.addEventListener("click", (e) => {
+      const skip1 = document.getElementById("skip-link");
+      if (skip1) {
+        skip1.addEventListener("click", (e) => {
           e.preventDefault();
-          if (this._onSolve) {
-            this._onSolve();
-          }
+          this._showMystery2();
         });
-        skipLink.addEventListener("keydown", (e) => {
+        skip1.addEventListener("keydown", (e) => {
           if (e.key === " ") {
             e.preventDefault();
-            if (this._onSolve) {
-              this._onSolve();
-            }
+            this._showMystery2();
+          }
+        });
+      }
+      const btn2 = document.getElementById("mystery-btn-2");
+      if (btn2) {
+        btn2.addEventListener("click", () => this._handleSubmit2());
+      }
+      const skip2 = document.getElementById("skip-link-2");
+      if (skip2) {
+        skip2.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (this._onSolve) this._onSolve();
+        });
+        skip2.addEventListener("keydown", (e) => {
+          if (e.key === " ") {
+            e.preventDefault();
+            if (this._onSolve) this._onSolve();
           }
         });
       }
     },
-    /**
-     * 「封を解く」ボタンクリック時の処理。
-     * @private
-     */
-    _handleSubmit() {
-      const inputEl = document.getElementById("answer-input");
-      const errorEl = document.getElementById("answer-error");
+    _handleSubmit1() {
+      const inputEl = document.getElementById("answer-input-1");
+      const errorEl = document.getElementById("answer-error-1");
       if (!inputEl || !errorEl) return;
-      const inputValue = inputEl.value;
-      const result = validate(inputValue);
+      const result = validate(inputEl.value);
       if (result === "empty") {
         errorEl.textContent = "\u7B54\u3048\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044";
       } else if (result === "correct") {
         errorEl.textContent = "";
-        if (this._onSolve) {
-          this._onSolve();
-        }
+        this._showMystery2();
       } else {
         errorEl.textContent = "\u3082\u3046\u4E00\u5EA6\u8003\u3048\u3066\u307F\u3066\u304F\u3060\u3055\u3044";
         inputEl.value = "";
         this.incrementFailCount();
       }
     },
-    /**
-     * 不正解回数をインクリメントし、5回に達したら Skip_Link を強調表示する。
-     * Requirements: 3.6
-     */
+    _handleSubmit2() {
+      const inputEl = document.getElementById("answer-input-2");
+      const errorEl = document.getElementById("answer-error-2");
+      if (!inputEl || !errorEl) return;
+      const result = validate2(inputEl.value);
+      if (result === "empty") {
+        errorEl.textContent = "\u7B54\u3048\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044";
+      } else if (result === "correct") {
+        errorEl.textContent = "";
+        if (this._onSolve) this._onSolve();
+      } else {
+        errorEl.textContent = "\u3082\u3046\u4E00\u5EA6\u8003\u3048\u3066\u307F\u3066\u304F\u3060\u3055\u3044";
+        inputEl.value = "";
+      }
+    },
+    _showMystery2() {
+      const m1 = document.getElementById("mystery-1");
+      const m2 = document.getElementById("mystery-2");
+      if (m1) m1.style.display = "none";
+      if (m2) m2.style.display = "block";
+    },
     incrementFailCount() {
       this._failCount += 1;
       if (this._failCount >= 5) {
         const skipLink = document.getElementById("skip-link");
-        if (skipLink) {
-          skipLink.classList.add("skip-link--highlighted");
-        }
+        if (skipLink) skipLink.classList.add("skip-link--highlighted");
       }
     }
   };
 
   // js/rsvp.js
-  function validate2(formData) {
+  function validate3(formData) {
     const errors = {};
     const name = formData.name ?? "";
     if (/^[\s\u3000]*$/.test(name)) {
@@ -193,7 +204,7 @@
         event.preventDefault();
         this._clearErrors();
         const formData = this._collectFormData(form);
-        const { valid, errors } = validate2(formData);
+        const { valid, errors } = validate3(formData);
         if (!valid) {
           this._showFieldErrors(errors);
           return;
@@ -344,7 +355,6 @@
   }
   function initMystery() {
     MysteryComponent.init({
-      answer: "TANBO",
       onSolve: () => {
         transitionToPhase(3);
         RsvpComponent.show();

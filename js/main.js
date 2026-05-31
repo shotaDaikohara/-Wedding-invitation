@@ -119,7 +119,6 @@ function initLetter() {
 
 function initMystery() {
   MysteryComponent.init({
-    answer: 'TANBO',
     onSolve: () => {
       transitionToPhase(3);
       RsvpComponent.show();
