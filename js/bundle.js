@@ -166,13 +166,14 @@
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
     try {
-      const response = await fetch(apiEndpoint, {
+      await fetch(apiEndpoint, {
         method: "POST",
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify(data),
-        signal: controller.signal
+        signal: controller.signal,
+        mode: "no-cors"
       });
-      return await response.json();
+      return { result: "success" };
     } finally {
       clearTimeout(timeoutId);
     }

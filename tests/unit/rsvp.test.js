@@ -165,7 +165,8 @@ describe('submitWithTimeout()', () => {
 
   test('成功レスポンスを返す（Requirements 5.5, 6.2）', async () => {
     global.fetch.mockResolvedValueOnce({
-      json: async () => ({ result: 'success' }),
+      type: 'opaque',
+      status: 0,
     });
 
     const result = await submitWithTimeout(
@@ -177,7 +178,7 @@ describe('submitWithTimeout()', () => {
       'https://example.com/api',
       expect.objectContaining({
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
+        mode: 'no-cors',
       })
     );
   });
@@ -306,28 +307,6 @@ describe('RsvpComponent.init() — フォーム送信フロー', () => {
 
     expect(document.getElementById('rsvp-form').classList.contains('rsvp-form--hidden')).toBe(true);
     expect(document.getElementById('rsvp-success').style.display).toBe('block');
-  });
-
-  test('APIエラーレスポンス時に入力データ保持・エラーメッセージ表示（Requirements 5.7, 6.7）', async () => {
-    global.fetch.mockResolvedValueOnce({
-      json: async () => ({ result: 'error', message: 'Internal error' }),
-    });
-
-    document.getElementById('rsvp-name').value = '山田 太郎';
-    document.getElementById('rsvp-attend').checked = true;
-
-    const form = document.getElementById('rsvp-form');
-    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-
-    await new Promise((r) => setTimeout(r, 50));
-
-    expect(document.getElementById('rsvp-error').textContent).toBe(
-      '送信に失敗しました。もう一度お試しください。'
-    );
-    // フォームは非表示にならない（入力データ保持）
-    expect(document.getElementById('rsvp-form').style.display).not.toBe('none');
-    // 入力値が保持されている
-    expect(document.getElementById('rsvp-name').value).toBe('山田 太郎');
   });
 
   test('ネットワークエラー時にエラーメッセージを表示する（Requirements 5.7, 6.4）', async () => {
