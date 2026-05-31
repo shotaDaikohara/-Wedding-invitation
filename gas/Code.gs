@@ -45,7 +45,7 @@ function sendConfirmationEmail(data) {
     + (data.allergy ? 'アレルギー等：' + data.allergy + '\n' : '')
     + (data.message ? 'メッセージ：' + data.message + '\n' : '')
     + '━━━━━━━━━━━━━━━━━━━━\n\n'
-    + 'ご不明な点がございましたら、このメールにご返信ください。\n\n'
+    + 'ご不明な点がございましたら、新郎新婦までお気軽にご連絡ください。\n\n'
     + '心よりお待ち申し上げております。';
 
   GmailApp.sendEmail(data.email, subject, body);
