@@ -51,7 +51,7 @@ export const EnvelopeComponent = {
     setTimeout(() => {
       flap.classList.add('flap-opening');
 
-      // 蓋が開いた後、2秒待って封筒をフェードアウト
+      // 蓋が開いた後、0.5秒待って封筒をフェードアウト
       setTimeout(() => {
         if (envelopeSection) {
           envelopeSection.style.transition = 'opacity 0.5s ease';
@@ -63,7 +63,7 @@ export const EnvelopeComponent = {
             this._onOpenComplete();
           }
         }, 500);
-      }, 2000);
+      }, 500);
     }, 400);
   },
 };

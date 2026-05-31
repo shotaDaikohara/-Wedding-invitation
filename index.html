@@ -71,8 +71,8 @@
             どうか、この特別な一日を共にお祝いいただければ幸いです。
           </p>
           <p class="letter-sign">
-            新郎 ◯◯ 太郎<br />
-            新婦 ◯◯ 花子
+            新郎 大小原　翔太<br />
+            新婦 勅使川原　夢南
           </p>
         </div>
 
@@ -167,6 +167,25 @@
             aria-describedby="rsvp-name-error"
           />
           <p id="rsvp-name-error" class="rsvp-form__field-error error-message" role="alert" aria-live="assertive"></p>
+        </div>
+
+        <!-- メールアドレス -->
+        <div class="rsvp-form__field">
+          <label class="rsvp-form__label" for="rsvp-email">
+            メールアドレス <span class="rsvp-form__required" aria-label="必須">*</span>
+          </label>
+          <input
+            type="email"
+            id="rsvp-email"
+            name="email"
+            class="rsvp-form__input"
+            maxlength="200"
+            autocomplete="email"
+            aria-required="true"
+            aria-describedby="rsvp-email-error"
+            placeholder="example@email.com"
+          />
+          <p id="rsvp-email-error" class="rsvp-form__field-error error-message" role="alert" aria-live="assertive"></p>
         </div>
 
         <!-- 出欠 -->

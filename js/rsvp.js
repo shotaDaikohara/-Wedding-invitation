@@ -11,13 +11,19 @@
 export function validate(formData) {
   const errors = {};
 
-  // 氏名バリデーション: 空文字列または空白のみ（スペース・タブ・全角スペース・改行）
+  // 氏名バリデーション
   const name = formData.name ?? '';
   if (/^[\s\u3000]*$/.test(name)) {
     errors.name = '必須項目です';
   }
 
-  // 出欠バリデーション: '出席' または '欠席' 以外は無効
+  // メールアドレスバリデーション
+  const email = formData.email ?? '';
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = '正しいメールアドレスを入力してください';
+  }
+
+  // 出欠バリデーション
   const attendance = formData.attendance ?? '';
   if (attendance !== '出席' && attendance !== '欠席') {
     errors.attendance = '必須項目です';
@@ -37,6 +43,7 @@ export function validate(formData) {
 export function buildPayload(formData) {
   return {
     name: formData.name ?? '',
+    email: formData.email ?? '',
     attendance: formData.attendance ?? '',
     allergy: formData.allergy ?? '',
     message: formData.message ?? '',
@@ -148,6 +155,7 @@ export const RsvpComponent = {
     const data = new FormData(form);
     return {
       name: data.get('name') ?? '',
+      email: data.get('email') ?? '',
       attendance: data.get('attendance') ?? '',
       allergy: data.get('allergy') ?? '',
       message: data.get('message') ?? '',
@@ -158,13 +166,10 @@ export const RsvpComponent = {
    * フィールドエラーメッセージをクリアする。
    */
   _clearErrors() {
-    const nameError = document.getElementById('rsvp-name-error');
-    const attendanceError = document.getElementById('rsvp-attendance-error');
-    const globalError = document.getElementById('rsvp-error');
-
-    if (nameError) nameError.textContent = '';
-    if (attendanceError) attendanceError.textContent = '';
-    if (globalError) globalError.textContent = '';
+    ['rsvp-name-error', 'rsvp-email-error', 'rsvp-attendance-error', 'rsvp-error'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '';
+    });
   },
 
   /**
@@ -173,12 +178,16 @@ export const RsvpComponent = {
    */
   _showFieldErrors(errors) {
     if (errors.name) {
-      const nameError = document.getElementById('rsvp-name-error');
-      if (nameError) nameError.textContent = errors.name;
+      const el = document.getElementById('rsvp-name-error');
+      if (el) el.textContent = errors.name;
+    }
+    if (errors.email) {
+      const el = document.getElementById('rsvp-email-error');
+      if (el) el.textContent = errors.email;
     }
     if (errors.attendance) {
-      const attendanceError = document.getElementById('rsvp-attendance-error');
-      if (attendanceError) attendanceError.textContent = errors.attendance;
+      const el = document.getElementById('rsvp-attendance-error');
+      if (el) el.textContent = errors.attendance;
     }
   },
 

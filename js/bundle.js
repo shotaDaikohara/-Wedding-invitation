@@ -38,7 +38,7 @@
               this._onOpenComplete();
             }
           }, 500);
-        }, 2e3);
+        }, 500);
       }, 400);
     }
   };
@@ -156,6 +156,10 @@
     if (/^[\s\u3000]*$/.test(name)) {
       errors.name = "\u5FC5\u9808\u9805\u76EE\u3067\u3059";
     }
+    const email = formData.email ?? "";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = "\u6B63\u3057\u3044\u30E1\u30FC\u30EB\u30A2\u30C9\u30EC\u30B9\u3092\u5165\u529B\u3057\u3066\u304F\u3060\u3055\u3044";
+    }
     const attendance = formData.attendance ?? "";
     if (attendance !== "\u51FA\u5E2D" && attendance !== "\u6B20\u5E2D") {
       errors.attendance = "\u5FC5\u9808\u9805\u76EE\u3067\u3059";
@@ -168,6 +172,7 @@
   function buildPayload(formData) {
     return {
       name: formData.name ?? "",
+      email: formData.email ?? "",
       attendance: formData.attendance ?? "",
       allergy: formData.allergy ?? "",
       message: formData.message ?? ""
@@ -244,6 +249,7 @@
       const data = new FormData(form);
       return {
         name: data.get("name") ?? "",
+        email: data.get("email") ?? "",
         attendance: data.get("attendance") ?? "",
         allergy: data.get("allergy") ?? "",
         message: data.get("message") ?? ""
@@ -253,12 +259,10 @@
      * フィールドエラーメッセージをクリアする。
      */
     _clearErrors() {
-      const nameError = document.getElementById("rsvp-name-error");
-      const attendanceError = document.getElementById("rsvp-attendance-error");
-      const globalError = document.getElementById("rsvp-error");
-      if (nameError) nameError.textContent = "";
-      if (attendanceError) attendanceError.textContent = "";
-      if (globalError) globalError.textContent = "";
+      ["rsvp-name-error", "rsvp-email-error", "rsvp-attendance-error", "rsvp-error"].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = "";
+      });
     },
     /**
      * フィールドごとのエラーメッセージを表示する。
@@ -266,12 +270,16 @@
      */
     _showFieldErrors(errors) {
       if (errors.name) {
-        const nameError = document.getElementById("rsvp-name-error");
-        if (nameError) nameError.textContent = errors.name;
+        const el = document.getElementById("rsvp-name-error");
+        if (el) el.textContent = errors.name;
+      }
+      if (errors.email) {
+        const el = document.getElementById("rsvp-email-error");
+        if (el) el.textContent = errors.email;
       }
       if (errors.attendance) {
-        const attendanceError = document.getElementById("rsvp-attendance-error");
-        if (attendanceError) attendanceError.textContent = errors.attendance;
+        const el = document.getElementById("rsvp-attendance-error");
+        if (el) el.textContent = errors.attendance;
       }
     },
     /**
