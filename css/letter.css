@@ -24,27 +24,18 @@
   line-height: 1.9;
   color: var(--color-text-secondary);
 
-  /* 初期状態: 非表示（アニメーション前） */
+  /* 初期状態: 非表示 */
   opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 
-  /* box-sizing は base.css の * で設定済みだが念のため明示 */
   box-sizing: border-box;
 }
 
-/* 出現アニメーション用クラス */
+/* 出現時: transitionで滑らかに表示 */
 .letter--visible {
-  animation: letterReveal var(--duration-letter, 0.9s) var(--easing-out, ease-out) forwards;
-}
-
-@keyframes letterReveal {
-  from {
-    transform: translateY(30px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* --------------------------------------------------------------------------
