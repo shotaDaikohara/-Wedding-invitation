@@ -177,7 +177,7 @@ describe('submitWithTimeout()', () => {
       'https://example.com/api',
       expect.objectContaining({
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain' },
       })
     );
   });

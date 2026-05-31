@@ -54,9 +54,11 @@ export async function submitWithTimeout(data, apiEndpoint, timeoutMs = 30000) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
   try {
+    // GAS Web App は application/json だとプリフライトが発生してCORSエラーになる。
+    // text/plain にすることでシンプルリクエストとして扱われ、プリフライトを回避できる。
     const response = await fetch(apiEndpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(data),
       signal: controller.signal,
     });

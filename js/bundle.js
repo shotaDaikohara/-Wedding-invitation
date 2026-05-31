@@ -168,7 +168,7 @@
     try {
       const response = await fetch(apiEndpoint, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "text/plain" },
         body: JSON.stringify(data),
         signal: controller.signal
       });
@@ -352,7 +352,7 @@
   }
   function initRsvp() {
     RsvpComponent.init({
-      apiEndpoint: "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"
+      apiEndpoint: "https://script.google.com/macros/s/AKfycbzIvu6WrUm7TlFBQZsIbza9UJY6Inh3Ceasl39_egUShYZhUkBdoYkiucqBu6ouTbl0/exec"
     });
   }
 })();
