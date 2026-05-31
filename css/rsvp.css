@@ -1,0 +1,392 @@
+/* ==========================================================================
+   rsvp.css — Phase 3: RSVPフォームのスタイル
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   フェードインアニメーション
+   -------------------------------------------------------------------------- */
+@keyframes rsvp-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   フォームコンテナ
+   -------------------------------------------------------------------------- */
+.rsvp-form {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background-color: var(--color-bg);
+  font-family: var(--font-family-base);
+  color: var(--color-text-secondary);
+
+  /* フェードインアニメーション 600ms */
+  animation: rsvp-fade-in var(--duration-fade) var(--easing-out) both;
+}
+
+/* --------------------------------------------------------------------------
+   タイトル
+   -------------------------------------------------------------------------- */
+.rsvp-form__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--color-accent);
+  padding-bottom: var(--spacing-md);
+}
+
+/* --------------------------------------------------------------------------
+   フィールド共通
+   -------------------------------------------------------------------------- */
+.rsvp-form__field {
+  margin-bottom: var(--spacing-lg);
+}
+
+.rsvp-form__label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 0.05em;
+}
+
+.rsvp-form__required {
+  color: var(--color-error);
+  margin-left: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+}
+
+.rsvp-form__hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  margin-top: var(--spacing-xs);
+}
+
+/* --------------------------------------------------------------------------
+   テキスト入力
+   -------------------------------------------------------------------------- */
+.rsvp-form__input {
+  display: block;
+  width: 100%;
+  min-height: var(--touch-target-min); /* 44px タッチターゲット確保 */
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: #faf8f3;
+  border: 1px solid #c9b99a;
+  border-radius: 4px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.rsvp-form__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+/* キーボードフォーカス時はアウトラインを表示（アクセシビリティ） */
+.rsvp-form__input:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.rsvp-form__input::placeholder {
+  color: var(--color-muted);
+}
+
+/* --------------------------------------------------------------------------
+   テキストエリア
+   -------------------------------------------------------------------------- */
+.rsvp-form__textarea {
+  display: block;
+  width: 100%;
+  min-height: 88px; /* 44px × 2 行分 */
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: #faf8f3;
+  border: 1px solid #c9b99a;
+  border-radius: 4px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-base);
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.rsvp-form__textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+/* キーボードフォーカス時はアウトラインを表示（アクセシビリティ） */
+.rsvp-form__textarea:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.rsvp-form__textarea::placeholder {
+  color: var(--color-muted);
+}
+
+/* --------------------------------------------------------------------------
+   ラジオボタン（出欠）
+   -------------------------------------------------------------------------- */
+.rsvp-form__fieldset {
+  border: none;
+  padding: 0;
+}
+
+.rsvp-form__fieldset legend.rsvp-form__label {
+  float: left; /* legend を通常フローに乗せる */
+  width: 100%;
+  margin-bottom: var(--spacing-xs);
+}
+
+.rsvp-form__radio-group {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  clear: both;
+}
+
+.rsvp-form__radio-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-height: var(--touch-target-min); /* 44px タッチターゲット確保 */
+  min-width: var(--touch-target-min);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.rsvp-form__radio-label:hover {
+  background-color: rgba(212, 175, 55, 0.08);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.rsvp-form__radio {
+  /* カスタムラジオボタン */
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border: 2px solid #c9b99a;
+  border-radius: 50%;
+  background-color: #faf8f3;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.rsvp-form__radio:checked {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
+}
+
+.rsvp-form__radio:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.rsvp-form__radio:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.rsvp-form__radio-text {
+  font-family: var(--font-family-base);
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   エラーメッセージ
+   -------------------------------------------------------------------------- */
+.rsvp-form__error {
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: rgba(198, 40, 40, 0.06);
+  border-left: 3px solid var(--color-error);
+  border-radius: 2px;
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+}
+
+/* 空のときは非表示 */
+.rsvp-form__error:empty {
+  display: none;
+}
+
+.rsvp-form__field-error {
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  margin-top: var(--spacing-xs);
+}
+
+/* 空のときは非表示 */
+.rsvp-form__field-error:empty {
+  display: none;
+}
+
+/* --------------------------------------------------------------------------
+   送信ボタン（ゴールドのアンティーク調）
+   -------------------------------------------------------------------------- */
+.rsvp-form__actions {
+  margin-top: var(--spacing-xl);
+  display: flex;
+  justify-content: center;
+}
+
+.rsvp-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--touch-target-min); /* 44px タッチターゲット確保 */
+  min-width: 160px;
+  padding: var(--spacing-sm) var(--spacing-xl);
+  background-color: transparent;
+  border: 2px solid var(--color-accent);
+  border-radius: 4px;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.rsvp-form__submit:hover {
+  background-color: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+.rsvp-form__submit:active {
+  background-color: #b8962e;
+  border-color: #b8962e;
+  color: #fff;
+  box-shadow: none;
+}
+
+.rsvp-form__submit:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.rsvp-form__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   送信完了メッセージ
+   -------------------------------------------------------------------------- */
+.rsvp-success {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  text-align: center;
+  font-family: var(--font-family-base);
+  color: var(--color-text-secondary);
+
+  /* フェードインアニメーション 600ms */
+  animation: rsvp-fade-in var(--duration-fade) var(--easing-out) both;
+}
+
+.rsvp-success__message {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--spacing-md);
+}
+
+.rsvp-success__sub {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   レスポンシブ: スマートフォン (〜430px)
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 430px) {
+  .rsvp-form {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .rsvp-form__title {
+    font-size: 1.125rem;
+  }
+
+  .rsvp-form__radio-group {
+    gap: var(--spacing-md);
+  }
+
+  .rsvp-form__submit {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   レスポンシブ: タブレット (431px〜767px)
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 431px) and (max-width: 767px) {
+  .rsvp-form {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   レスポンシブ: デスクトップ (768px 以上)
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 768px) {
+  .rsvp-form {
+    padding: var(--spacing-2xl) var(--spacing-xl);
+  }
+
+  .rsvp-form__title {
+    font-size: 1.375rem;
+  }
+}

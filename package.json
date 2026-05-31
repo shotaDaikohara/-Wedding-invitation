@@ -1,0 +1,16 @@
+{
+  "name": "wedding-mystery-invitation",
+  "version": "1.0.0",
+  "description": "謎解き付きウェディングWeb招待状",
+  "main": "js/main.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --runInBand",
+    "test:unit": "node --experimental-vm-modules node_modules/.bin/jest --testPathPattern=\"unit|property\" --runInBand"
+  },
+  "devDependencies": {
+    "fast-check": "^3.22.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0"
+  },
+  "type": "module"
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="謎解き付きウェディング招待状" />
+  <title>Wedding Invitation</title>
+
+  <!-- Google Fonts: Shippori Mincho -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/envelope.css" />
+  <link rel="stylesheet" href="css/letter.css" />
+  <link rel="stylesheet" href="css/rsvp.css" />
+</head>
+<body>
+  <main id="app" class="app-container">
+    <!-- Phase 1: 封筒 -->
+    <section id="phase-envelope" class="phase phase--active" aria-label="封筒">
+      <div class="envelope" role="img" aria-label="アンティーク封筒">
+        <!-- 封筒の蓋（フラップ） -->
+        <div class="envelope-flap" aria-hidden="true">
+          <div class="envelope-flap__inner"></div>
+        </div>
+
+        <!-- 封筒の本体装飾 -->
+        <div class="envelope-body" aria-hidden="true">
+          <!-- 封筒の折り線（左下三角） -->
+          <div class="envelope-body__fold envelope-body__fold--left"></div>
+          <!-- 封筒の折り線（右下三角） -->
+          <div class="envelope-body__fold envelope-body__fold--right"></div>
+          <!-- 封筒の折り線（下三角） -->
+          <div class="envelope-body__fold envelope-body__fold--bottom"></div>
+        </div>
+
+        <!-- シーリングスタンプ（クリック可能） -->
+        <button
+          class="sealing-stamp"
+          type="button"
+          aria-label="シーリングスタンプをクリックして封筒を開く"
+        >
+          <span class="sealing-stamp__monogram" aria-hidden="true">W</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Phase 2: 手紙・謎解き -->
+    <section id="phase-letter" class="phase phase--hidden" aria-label="手紙と謎解き">
+      <!-- Letter: 羊皮紙の手紙 -->
+      <article class="letter" aria-label="招待状の手紙">
+        <!-- 羊皮紙テクスチャオーバーレイ -->
+        <div class="letter-texture" aria-hidden="true"></div>
+
+        <!-- 挨拶文 -->
+        <div class="letter-content">
+          <p class="letter-greeting">謹啓</p>
+          <p>
+            このたびは私どもの結婚式にご招待申し上げます。<br />
+            皆様のご臨席を心よりお待ち申し上げております。
+          </p>
+          <p>
+            長い旅路の末、ようやくこの日を迎えることができました。<br />
+            どうか、この特別な一日を共にお祝いいただければ幸いです。
+          </p>
+          <p class="letter-sign">
+            新郎 ◯◯ 太郎<br />
+            新婦 ◯◯ 花子
+          </p>
+        </div>
+
+        <!-- 謎解きセクション -->
+        <section class="mystery-section" aria-label="謎解き">
+          <div class="mystery-riddle">
+            <p class="mystery-title">― 封を解く謎 ―</p>
+            <pre class="mystery-problem">
+【例】
+3 , 1 , 20 = CAT
+4 , 15 , 7 = DOG
+19 , 21 , 14 = SUN
+
+【問】
+20 , 1 , 14 , 2 , 15 = ?</pre>
+          </div>
+
+          <div class="mystery-input-area">
+            <label for="answer-input" class="mystery-label">答えを入力してください</label>
+            <input
+              type="text"
+              id="answer-input"
+              class="answer-input"
+              maxlength="50"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              aria-describedby="answer-error"
+            />
+            <p id="answer-error" class="error-message" role="alert" aria-live="polite"></p>
+          </div>
+
+          <button type="button" class="mystery-submit-btn" aria-label="謎の答えを送信して封を解く">
+            封を解く
+          </button>
+
+          <!-- スキップリンク -->
+          <a
+            href="#"
+            id="skip-link"
+            class="skip-link"
+            role="button"
+            aria-label="謎を解かずに出欠フォームへ進む"
+          >謎を解かずに回答する</a>
+        </section>
+      </article>
+    </section>
+
+    <!-- Phase 3: RSVPフォーム -->
+    <section id="phase-rsvp" class="phase phase--hidden" aria-label="出欠フォーム">
+      <form id="rsvp-form" class="rsvp-form" novalidate aria-label="出欠入力フォーム" style="display: none;">
+        <h2 class="rsvp-form__title">ご出欠のご連絡</h2>
+
+        <!-- エラーメッセージ領域（フォーム全体） -->
+        <p id="rsvp-error" class="rsvp-form__error error-message" role="alert" aria-live="assertive"></p>
+
+        <!-- 氏名 -->
+        <div class="rsvp-form__field">
+          <label class="rsvp-form__label" for="rsvp-name">
+            お名前 <span class="rsvp-form__required" aria-label="必須">*</span>
+          </label>
+          <input
+            type="text"
+            id="rsvp-name"
+            name="name"
+            class="rsvp-form__input"
+            maxlength="100"
+            autocomplete="name"
+            aria-required="true"
+            aria-describedby="rsvp-name-error"
+          />
+          <p id="rsvp-name-error" class="rsvp-form__field-error error-message" role="alert" aria-live="assertive"></p>
+        </div>
+
+        <!-- 出欠 -->
+        <fieldset class="rsvp-form__field rsvp-form__fieldset">
+          <legend class="rsvp-form__label">
+            ご出欠 <span class="rsvp-form__required" aria-label="必須">*</span>
+          </legend>
+          <div class="rsvp-form__radio-group">
+            <label class="rsvp-form__radio-label" for="rsvp-attend">
+              <input
+                type="radio"
+                id="rsvp-attend"
+                name="attendance"
+                value="出席"
+                class="rsvp-form__radio"
+                aria-required="true"
+              />
+              <span class="rsvp-form__radio-text">出席</span>
+            </label>
+            <label class="rsvp-form__radio-label" for="rsvp-absent">
+              <input
+                type="radio"
+                id="rsvp-absent"
+                name="attendance"
+                value="欠席"
+                class="rsvp-form__radio"
+                aria-required="true"
+              />
+              <span class="rsvp-form__radio-text">欠席</span>
+            </label>
+          </div>
+          <p id="rsvp-attendance-error" class="rsvp-form__field-error error-message" role="alert" aria-live="assertive"></p>
+        </fieldset>
+
+        <!-- アレルギー等 -->
+        <div class="rsvp-form__field">
+          <label class="rsvp-form__label" for="rsvp-allergy">
+            アレルギー・食事制限等
+          </label>
+          <textarea
+            id="rsvp-allergy"
+            name="allergy"
+            class="rsvp-form__textarea"
+            maxlength="1000"
+            rows="3"
+            placeholder="ある場合はご記入ください"
+            aria-describedby="rsvp-allergy-hint"
+          ></textarea>
+          <p id="rsvp-allergy-hint" class="rsvp-form__hint">任意・最大1000文字</p>
+        </div>
+
+        <!-- メッセージ -->
+        <div class="rsvp-form__field">
+          <label class="rsvp-form__label" for="rsvp-message">
+            メッセージ
+          </label>
+          <textarea
+            id="rsvp-message"
+            name="message"
+            class="rsvp-form__textarea"
+            maxlength="1000"
+            rows="4"
+            placeholder="ひとことメッセージをどうぞ"
+            aria-describedby="rsvp-message-hint"
+          ></textarea>
+          <p id="rsvp-message-hint" class="rsvp-form__hint">任意・最大1000文字</p>
+        </div>
+
+        <!-- 送信ボタン -->
+        <div class="rsvp-form__actions">
+          <button type="submit" id="rsvp-submit" class="rsvp-form__submit">
+            送信する
+          </button>
+        </div>
+      </form>
+
+      <!-- 送信完了メッセージ領域 -->
+      <div id="rsvp-success" class="rsvp-success" style="display: none;" aria-live="polite">
+        <p class="rsvp-success__message">ご回答ありがとうございます</p>
+        <p class="rsvp-success__sub">お返事をお待ちしております。</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- JavaScript modules -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

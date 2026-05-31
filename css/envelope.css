@@ -1,0 +1,327 @@
+/* ==========================================================================
+   envelope.css — Phase 1: 封筒・シーリングスタンプのスタイル
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   キーフレーム定義
+   -------------------------------------------------------------------------- */
+
+/* スタンプが割れるアニメーション（0.4s, ease-out） */
+@keyframes stamp-break {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1.15) rotate(-3deg);
+    opacity: 1;
+  }
+  60% {
+    transform: scale(0.9) rotate(5deg);
+    opacity: 0.7;
+    clip-path: polygon(0% 0%, 48% 0%, 50% 50%, 52% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+  100% {
+    transform: scale(0.8) rotate(8deg);
+    opacity: 0;
+    clip-path: polygon(0% 0%, 45% 0%, 50% 55%, 55% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+
+/* 封筒の蓋が上方向に開くアニメーション（0.8s, ease-in-out、CSS 3D Transform） */
+@keyframes flap-open {
+  0% {
+    transform: rotateX(0deg);
+    transform-origin: top center;
+  }
+  100% {
+    transform: rotateX(-180deg);
+    transform-origin: top center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   封筒コンテナ
+   -------------------------------------------------------------------------- */
+#phase-envelope {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+}
+
+.envelope {
+  position: relative;
+  width: min(340px, 90vw);
+  height: min(240px, 63vw);
+  perspective: 800px;
+
+  /* ヴィクトリアン・アンティーク調の封筒色 */
+  background-color: #e8dcc8;
+  border-radius: 4px;
+
+  /* アンティーク感のある影 */
+  box-shadow:
+    0 8px 32px rgba(93, 64, 55, 0.25),
+    0 2px 8px rgba(93, 64, 55, 0.15),
+    inset 0 0 0 1px rgba(212, 175, 55, 0.3);
+
+  /* 装飾的なボーダー */
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   封筒の蓋（フラップ）
+   -------------------------------------------------------------------------- */
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* 蓋の高さ：封筒の約50% */
+  height: 50%;
+  transform-origin: top center;
+  transform-style: preserve-3d;
+  z-index: 10;
+
+  /* 蓋の三角形をclip-pathで表現 */
+  clip-path: polygon(0% 0%, 50% 100%, 100% 0%);
+  background: linear-gradient(
+    160deg,
+    #ddd0b0 0%,
+    #c8b896 40%,
+    #b8a880 100%
+  );
+
+  /* アンティーク感のある境界線 */
+  border-bottom: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.envelope-flap__inner {
+  position: absolute;
+  inset: 0;
+  /* 羊皮紙風のテクスチャグラデーション */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 50%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+}
+
+/* 蓋が開くアニメーション適用クラス */
+.envelope-flap.flap-opening {
+  animation: flap-open var(--duration-flap, 0.8s) var(--easing-in-out, ease-in-out) forwards;
+}
+
+/* --------------------------------------------------------------------------
+   封筒の本体（折り線・内側の三角形）
+   -------------------------------------------------------------------------- */
+.envelope-body {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+/* 左下の折り線（三角形） */
+.envelope-body__fold--left {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 calc(min(240px, 63vw) * 0.5) calc(min(340px, 90vw) * 0.5);
+  border-color: transparent transparent #d4c4a0 transparent;
+  opacity: 0.6;
+}
+
+/* 右下の折り線（三角形） */
+.envelope-body__fold--right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: calc(min(240px, 63vw) * 0.5) 0 0 calc(min(340px, 90vw) * 0.5);
+  border-color: transparent transparent transparent #cbb890;
+  opacity: 0.6;
+}
+
+/* 下部の折り線（三角形） */
+.envelope-body__fold--bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(
+    to bottom,
+    #e0d0b0 0%,
+    #d4c4a0 100%
+  );
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+}
+
+/* --------------------------------------------------------------------------
+   シーリングスタンプ
+   -------------------------------------------------------------------------- */
+.sealing-stamp {
+  /* 封筒中央に配置 */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+
+  /* タッチターゲット 44px × 44px 以上を確保 */
+  min-width: 72px;
+  min-height: 72px;
+  width: 72px;
+  height: 72px;
+  padding: 0;
+
+  /* 円形のスタンプ */
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  /* ゴールドのシーリングワックス風グラデーション */
+  background: radial-gradient(
+    circle at 35% 35%,
+    #f0d060 0%,
+    #d4af37 40%,
+    #b8941e 70%,
+    #9a7a10 100%
+  );
+
+  /* スタンプの立体感 */
+  box-shadow:
+    0 3px 10px rgba(93, 64, 55, 0.4),
+    0 1px 3px rgba(93, 64, 55, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+
+  /* アンティーク感のある外枠 */
+  outline: 2px solid rgba(212, 175, 55, 0.6);
+  outline-offset: 2px;
+
+  /* ホバー・フォーカス時のトランジション */
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  /* テキスト選択を無効化 */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sealing-stamp:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow:
+    0 5px 16px rgba(93, 64, 55, 0.5),
+    0 2px 6px rgba(93, 64, 55, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.sealing-stamp:active {
+  transform: translate(-50%, -50%) scale(0.97);
+}
+
+/* スタンプ内のモノグラム文字 */
+.sealing-stamp__monogram {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family-base, 'Shippori Mincho', serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #5d4037;
+  text-shadow:
+    0 1px 2px rgba(255, 255, 255, 0.4),
+    0 -1px 1px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* スタンプが割れるアニメーション適用クラス */
+.sealing-stamp.stamp-breaking {
+  animation: stamp-break var(--duration-stamp, 0.4s) var(--easing-out, ease-out) forwards;
+  pointer-events: none;
+}
+
+/* アニメーション中（pointer-events 無効化） */
+.sealing-stamp[style*="pointer-events: none"],
+.sealing-stamp.stamp-breaking {
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   封筒の装飾ライン（ヴィクトリアン調）
+   -------------------------------------------------------------------------- */
+.envelope::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   レスポンシブ: スマートフォン（375px〜430px）
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 430px) {
+  .envelope {
+    width: min(300px, 88vw);
+    height: min(210px, 61.6vw);
+  }
+
+  .sealing-stamp {
+    width: 64px;
+    height: 64px;
+    min-width: 64px;
+    min-height: 64px;
+  }
+
+  .sealing-stamp__monogram {
+    font-size: 1.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   レスポンシブ: タブレット（431px〜767px）
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 431px) and (max-width: 767px) {
+  .envelope {
+    width: min(380px, 80vw);
+    height: min(266px, 56vw);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   レスポンシブ: デスクトップ（768px 以上）
+   -------------------------------------------------------------------------- */
+@media screen and (min-width: 768px) {
+  .envelope {
+    width: 420px;
+    height: 294px;
+  }
+
+  .sealing-stamp {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    min-height: 80px;
+  }
+
+  .sealing-stamp__monogram {
+    font-size: 2rem;
+  }
+}
