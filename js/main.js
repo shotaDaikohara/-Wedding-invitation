@@ -46,6 +46,7 @@ function transitionToPhase(nextPhase) {
     if (Number(phase) === nextPhase) {
       el.classList.remove('phase--hidden');
       el.classList.add('phase--active');
+      console.log('[DEBUG] showing:', id, el.className);
     } else {
       el.classList.remove('phase--active');
       el.classList.add('phase--hidden');
@@ -100,9 +101,7 @@ export const LetterComponent = {
   reveal() {
     const letterEl = document.querySelector('.letter');
     if (!letterEl) return;
-
-    // `.letter--visible` クラスを付与して CSS アニメーションを開始
-    letterEl.classList.add('letter--visible');
+    // 何もしない — letter は phase--active になれば自動的に表示される
   },
 };
 

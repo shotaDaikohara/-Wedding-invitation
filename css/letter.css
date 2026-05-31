@@ -13,34 +13,13 @@
   max-width: 640px;
   margin: 0 auto;
   padding: var(--spacing-2xl) var(--spacing-xl);
-
-  /* 羊皮紙カラー */
   background-color: #f9f5ec;
   border: 2px solid var(--color-accent);
   border-radius: 4px;
-
-  /* タイポグラフィ */
   font-family: var(--font-family-base);
   line-height: 1.9;
   color: var(--color-text-secondary);
-
   box-sizing: border-box;
-}
-
-/* 出現アニメーション */
-.letter--visible {
-  animation: letterReveal 0.8s ease-out both;
-}
-
-@keyframes letterReveal {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* --------------------------------------------------------------------------

@@ -44,18 +44,19 @@ export const EnvelopeComponent = {
 
     if (!stamp || !flap) return;
 
-    // Step 1: pointer-events: none で追加クリックを無効化
+    // クリック無効化
     stamp.style.pointerEvents = 'none';
 
-    // Step 2: スタンプ割れアニメーション開始
+    // スタンプ割れアニメーション（0.4s）
     stamp.classList.add('stamp-breaking');
 
-    // Step 3: 400ms 後に封筒蓋開きアニメーション開始
+    // 400ms後に封筒蓋開きアニメーション（0.8s）
     setTimeout(() => {
       flap.classList.add('flap-opening');
 
-      // Step 4: 800ms 後に onOpenComplete() 呼び出し
+      // 800ms後にフェーズ切り替え
       setTimeout(() => {
+        console.log('[DEBUG] onOpenComplete called');
         if (typeof this._onOpenComplete === 'function') {
           this._onOpenComplete();
         }

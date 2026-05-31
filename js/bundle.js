@@ -28,6 +28,7 @@
       setTimeout(() => {
         flap.classList.add("flap-opening");
         setTimeout(() => {
+          console.log("[DEBUG] onOpenComplete called");
           if (typeof this._onOpenComplete === "function") {
             this._onOpenComplete();
           }
@@ -298,6 +299,7 @@
       if (Number(phase) === nextPhase) {
         el.classList.remove("phase--hidden");
         el.classList.add("phase--active");
+        console.log("[DEBUG] showing:", id, el.className);
       } else {
         el.classList.remove("phase--active");
         el.classList.add("phase--hidden");
@@ -328,7 +330,6 @@
     reveal() {
       const letterEl = document.querySelector(".letter");
       if (!letterEl) return;
-      letterEl.classList.add("letter--visible");
     }
   };
   function initLetter() {
